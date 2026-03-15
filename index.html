@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Royal Food | Premium Restaurant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #8B0000;
+            --primary-light: #a52a2a;
+            --secondary: #D4AF37;
+            --light: #f8f5f0;
+            --dark: #2c2c2c;
+            --gray: #555;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: #fefefe;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: var(--secondary);
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--light);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #e6c34f;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Menu Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 3px;
+            background-color: var(--secondary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .menu-categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .category-btn {
+            background-color: white;
+            border: 2px solid var(--primary-light);
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 4rem;
+        }
+
+        .menu-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            display: none;
+        }
+
+        .menu-item.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .item-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .item-price {
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .item-details {
+            padding: 20px;
+        }
+
+        .item-description {
+            color: var(--gray);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            min-height: 60px;
+        }
+
+        .item-sizes {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .size {
+            background-color: var(--light);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .size-price {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-section p {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-info li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-info i {
+            color: var(--secondary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 25px;
+                right: 20px;
+            }
+            
+            nav {
+                width: 100%;
+                display: none;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-crown"></i>
+                <h1>The Royal Food</h1>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Welcome to The Royal Food Lounge</h2>
+            <p></p>
+            <a href="#menu" class="btn">View Our Menu</a>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="container" id="menu">
+        <div class="section-title">
+            <h2>Our Royal Menu</h2>
+        </div>
+
+        <div class="menu-categories" id="menuCategories">
+            <!-- Categories will be generated by JavaScript -->
+        </div>
+
+        <div class="menu-grid" id="menuGrid">
+            <!-- Menu items will be generated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>The Royal Food</h3>
+                    <p>গাজীপুরের কোনাবাড়ীতে অবস্থিত The Royal Food Lounge সুস্বাদু খাবার, আরামদায়ক পরিবেশ এবং আন্তরিক আতিথেয়তার এক সুন্দর সমন্বয়। এখানে প্রতিটি খাবার যত্ন ও ভালোবাসা দিয়ে প্রস্তুত করা হয়, যাতে আপনি উপভোগ করতে পারেন সত্যিকারের রাজকীয় স্বাদ।
+বন্ধু ও পরিবারের সাথে সুন্দর সময় কাটানো কিংবা Birthday, Anniversary, Family Gathering, Corporate Meeting সহ যেকোনো বিশেষ অনুষ্ঠানের জন্যও এখানে রয়েছে বুকিং সুবিধা।
+The Royal Food Lounge  যেখানে স্বাদ, পরিবেশ এবং মুহূর্ত সবকিছুই হয়ে ওঠে রাজকীয়।
+📍 Location: Konabari, Gazipur 🍽️✨</p>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/profile.php?id=61576253606081"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i>  গাজীপুর, কোনাবাড়ি — ফ্যামেলি ফেয়ারের উপরে, আনসার মার্কেটের বিপরীত পাশে </li>
+                        <li><i class="fas fa-phone"></i> +880 1896-176893</li>
+                        <li><i class="fas fa-envelope"></i> tansenahamed5@gmail.com</li>
+                        <li><i class="fas fa-clock"></i> Open Daily: 11:00 AM - 11:00 PM</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="contact-info">
+                        <li><a href="#home" style="color:#ccc; text-decoration:none;">Home</a></li>
+                        <li><a href="#menu" style="color:#ccc; text-decoration:none;">Menu</a></li>
+                        <li><a href="#about" style="color:#ccc; text-decoration:none;">About Us</a></li>
+                        <li><a href="#contact" style="color:#ccc; text-decoration:none;">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy;Tanvir Ahmed. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Data from the images with food images
+        const menuData = [
+            
+            // APPETIZERS
+            {id: 1, name: "French Fry", price: "180/-", category: "appetizers", description: "Crispy golden french fries", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"},
+            {id: 2, name: "Crispy Fried Chicken (2 Pcs)", price: "230/-", category: "appetizers", description: "Juicy chicken pieces coated in crispy batter", image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"},
+            {id: 3, name: "Crispy Fried Chicken (4 Pcs)", price: "450/-", category: "appetizers", description: "Double portion of our signature crispy fried chicken", image: "https://t4.ftcdn.net/jpg/09/76/77/31/360_F_976773163_HY80BFfWrxdyWLv3let65tHpslCl9a2G.jpg"},
+            {id: 4, name: "Thai Fried Chicken (4 Pcs)", price: "420/-", category: "appetizers", description: "Thai-style marinated fried chicken with aromatic herbs", image: "https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"},
+            {id: 5, name: "Spicy Thai Chinese Fried Chicken", price: "690/-", category: "appetizers", description: "Spicy fusion of Thai and Chinese flavors", image: "https://stickyricethaikitchen.com/wp-content/uploads/2023/07/IMG_6306-Large-500x500.jpeg"},
+            {id: 6, name: "Strips Chicken with Fry (6 Pcs)", price: "270/-", category: "appetizers", description: "Crispy chicken strips served with fries", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3Ox1pEhp-pcVQOCXSWb9LdfCoHLN1V0-gBQ&s"},
+            {id: 7, name: "Hot Wings (6 Pcs)", price: "220/-", category: "appetizers", description: "Spicy hot chicken wings", image: "https://www.licious.in/blog/wp-content/uploads/2020/12/Chicken-Strips.jpg"},
+            {id: 8, name: "Buffalo Wings (6 Pcs)", price: "220/-", category: "appetizers", description: "Classic buffalo wings with tangy sauce", image: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"},
+            {id: 9, name: "Chicken Onthon (6 Pcs)", price: "199/-", category: "appetizers", description: "Special chicken onthon recipe", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_xYejJCGAGdeE3zMps9TeS44Kxd-ck-heg&s"},
+            {id: 10, name: "Special Onthon (8 Pcs)", price: "250/-", category: "appetizers", description: "Our special onthon with extra ingredients", image: "https://i.ytimg.com/vi/Bk8wGlZVE_4/maxresdefault.jpg"},
+            {id: 11, name: "Regular Chicken Balls (6 Pcs)", price: "350/-", category: "appetizers", description: "Juicy chicken balls with dipping sauce", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0y0_9gkpkVnKa067sLuEUeGF0V5Oi4u9BqrJOK-x7Q&s"},
+            {id: 12, name: "Cheese Ball", price: "330/-", category: "appetizers", description: "Crispy cheese balls with melted cheese filling", image: "https://vargasavourrecipes.com/wp-content/uploads/2025/03/Fried-Cheese-Balls-4.jpg"},
+            {id: 13, name: "Grilled Mushroom", price: "320/-", category: "appetizers", description: "Fresh mushrooms grilled to perfection", image: "https://cdn.loveandlemons.com/wp-content/uploads/2022/06/grilled-mushrooms.jpg"},
+            {id: 14, name: "Lollypop with Fry (6 Pcs)", price: "280/-", category: "appetizers", description: "Chicken lollypops served with french fries", image: "https://www.licious.in/blog/wp-content/uploads/2022/02/shutterstock_761402230-600x600.jpg"},
+            {id: 15, name: "B.B.Q Lollypop (6 Pcs)", price: "220/-", category: "appetizers", description: "Barbecue glazed chicken lollypops", image: "https://i8.amplience.net/i/traeger/Chicken_Lollipops_hero"},
+            {id: 16, name: "Pop Chicken (12 Pcs)", price: "180/-", category: "appetizers", description: "Bite-sized pop chicken pieces", image: "https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_3.jpg"},
+            {id: 17, name: "Chicken Nachos", price: "200/-", category: "appetizers", description: "Crispy nachos topped with chicken and cheese", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl87duqM36j7WyXqRi9IlrWBez43Au0-qoOw&s"},
+            {id: 18, name: "Special Cheese Nachos", price: "280/-", category: "appetizers", description: "Nachos loaded with special cheese blend", image: "https://iambaker.net/wp-content/uploads/2019/07/chili-cheese-nacho-final.jpg"},
+            {id: 19, name: "American Chocey", price: "390/-", category: "appetizers", image: "https://herbivorecucina.com/wp-content/uploads/2022/09/American-Chopsuey-3-scaled.jpg"},
+            {id: 20, name: "Potato Wedges", price: "150/-", category: "appetizers", description: "Crispy seasoned potato wedges", image: "https://healthyfitnessmeals.com/wp-content/uploads/2020/05/instagram-In-Stream_Square___Baked-potato-wedges-4.jpg"},
+            {id: 21, name: "Masallam Wedges", price: "240/-", category: "appetizers", description: "Potato wedges with special masala seasoning", image: "https://www.jocooks.com/wp-content/uploads/2013/04/crispy-indian-potato-wedges-1.jpg"},
+            {id: 22, name: "Grilled Chicken Sausage", price: "280/-", category: "appetizers", description: "Juicy grilled chicken sausage", image: "https://media.istockphoto.com/id/1368204398/photo/roasted-sausages-on-cutting-board.jpg?s=612x612&w=0&k=20&c=_dAUuq9No7vWEYXkDi5bgkEbNqJaXgAqk2pjK0k8tc4="},
+            
+            // BURGERS
+            {id: 23, name: "Pizza Burger Regular", price: "290/-", category: "burgers", description: "Classic chicken burger with fresh vegetables", image: "https://hips.hearstapps.com/hmg-prod/images/pepperoni-pizza-burger-recipe-2-697a7dcd4305d.jpeg?crop=0.502xw:1.00xh;0.290xw,0&resize=1200:*"},
+            {id: 24, name: "Pizza Special Burger", price: "350/-", category: "burgers", description: "Classic chicken burger with fresh vegetables", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9yTAg-uokuH1gZlz05S03GweQ9uNHtLQmqA&s"},
+            {id: 25, name: "Chicken Burger", price: "180/-", category: "burgers", description: "Classic chicken burger with fresh vegetables", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA8iywGClMYew9xXWf-IFHRRLxum-kRlphnQ&s"},
+            {id: 26, name: "Chicken Petty Burger", price: "220/-", category: "burgers", description: "Burger with juicy chicken patty", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"},
+            {id: 27, name: "B.B.Q Chicken Burger", price: "230/-", category: "burgers", description: "Chicken burger with barbecue sauce", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0l_fcaO6HncAd91197CAfTkEwJCsuig0DAQ&s"},
+            {id: 28, name: "Chicken Sausage Burger", price: "235/-", category: "burgers", description: "Burger with grilled chicken sausage", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSekhQKDr47GrrnHgxKxIBLhJRMUTnzscNI4w&s"},
+            {id: 29, name: "Chicken Cheese Burger", price: "235/-", category: "burgers", description: "Burger with grilled chicken sausage", image: "https://i.pinimg.com/474x/1a/81/da/1a81da9ddb7d13c35277178792fe67c0.jpg"},
+            {id: 30, name: "Crispy Chicken Burger", price: "190/-", category: "burgers", description: "Crispy fried chicken fillet burger", image: "https://images.immediate.co.uk/production/volatile/sites/30/2025/04/Crispiest-buttermilk-fried-chicken-burgers-90854e5.jpg"},
+            {id: 31, name: "Chicken Double Petty Burger", price: "290/-", category: "burgers", description: "Double chicken patty burger", image: "https://thumbs.dreamstime.com/b/big-grilled-chicken-burger-double-cutlet-cheese-wooden-background-side-view-close-up-208658240.jpg"},
+            {id: 32, name: "Special Chicken Burger", price: "330/-", category: "burgers", description: "Our special recipe chicken burger", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnhi_Yp-CaFebP9T18Hj0-g9zuEeyfJj9xJw&s"},
+            {id: 33, name: "Overloaded Burger", price: "370/-", category: "burgers", description: "Fully loaded burger with extra toppings", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4a7_oCsfTOnne0OpvN1mGK3g3853FFfQPng&s"},
+
+            
+            // PIZZA
+            {id: 36, name: "Italian Pizza", price: "410/-", category: "pizza", description: "Chicken, Capsicum, Mushroom, Origanu, Butter, Oil, Cheese", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", sizes: ["6inch: 410/-", "9inch: 510/-", "12inch: 680/-"]},
+            {id: 37, name: "BBQ Pizza", price: "450/-", category: "pizza", description: "Chicken, Capsicum, Mushroom, Origanu, Butter, Oil, Black Olive, Tomato, Cheese, BBQ Sauce", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwyEplWAFa-mBuSV7WR0YgBUkJMBjdMgOGBg&s", sizes: ["6inch: 450/-", "9inch: 530/-", "12inch: 690/-"]},
+            {id: 38, name: "Mexican Pizza", price: "430/-", category: "pizza", description: "Chicken, Capsicum, Mushroom, Origanu, Butter, Oil, Black Olive, Tomato, Chef's Sauce, Cheese", image: "https://www.acouplecooks.com/wp-content/uploads/2018/05/Loaded-Mexican-Pizza-023.jpg", sizes: ["6inch: 430/-", "9inch: 530/-", "12inch: 690/-"]},
+            {id: 39, name: "Beef Pizza", price: "490/-", category: "pizza", description: "Chicken, Capsicum, Origanu, Butter, OIL, Black Olive, Tomato, Chef's Sauce, Cheese", image: "https://embed.widencdn.net/img/beef/tmnxj7vtj5/360x360px/beef-pepper-and-onion-pizza-square.tif?keep=c&u=7fueml", sizes: ["6inch: 490/-", "9inch: 590/-", "12inch: 790/-"]},
+            {id: 40, name: "Four Season Pizza", price: "440/-", category: "pizza", description: "Chicken Capsicum, Origanu, Butter, Oil, Black Olive, Tomato, Chef's Sauce, Cheese", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbAKZEqVb_jXk7uYRNPC3D3TteR4MuAhiCyw&s", sizes: ["6inch: 440/-", "9inch: 550/-", "12inch: 730/-"]},
+            {id: 41, name: "Royal Pizza", price: "470/-", category: "pizza", description: "Chicken, Capsicum, Mushroom, Origanu, Butter, Oil, Black, Olive, Tomato, Chef's Sauce, Cheese", image: "https://content.jdmagicbox.com/comp/indore/z1/0731px731.x731.190516234054.i5z1/catalogue/royal-pizza-center-indore-pizza-outlets-184q4gvges.jpg", sizes: ["6inch: 470/-", "9inch: 570/-", "12inch: 750/-"]},
+            {id: 42, name: "Chef's Special Overloaded Pizza", price: "690/-", category: "pizza", description: "Chicken Loaded, Capsicum, Mushroom, Origanu, Butter, Oil, Black Olive, Tomato, Chef's Sauce, Cheese Loaded", image: "https://media-cdn.tripadvisor.com/media/photo-m/1280/28/38/86/7e/chef-special-pizza-i.jpg", sizes: ["9inch: 690/-", "12inch: 999/-"]},
+            
+            // CHOW MEIN
+            {id: 43, name: "Chicken Chowmein", price: "200/-", category: "chowmein", description: "Stir-fried noodles with chicken and vegetables", image: "https://recipe30.com/wp-content/uploads/2021/09/Chicken-Chow-Mein-1.jpg", sizes: ["1:1: 200/-", "1:3: 500/-"]},
+            {id: 44, name: "Mix Chowmein", price: "260/-", category: "chowmein", description: "Mixed vegetable and meat chowmein", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ87j20oqiwaFoq67o481WAvtseqeaEQKOhcg&s", sizes: ["1:1: 260/-", "1:3: 610/-"]},
+            {id: 45, name: "Sizzling Chowmein", price: "290/-", category: "chowmein", description: "Sizzling hot plate chowmein", image: "https://i.ytimg.com/vi/soBa1SN_szc/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBkodFOaMV7kyDxqnIBhws7J9-1Og", sizes: ["1:1: 290/-", "1:3: 690/-"]},
+            {id: 46, name: "Tikka Chowmein", price: "340/-", category: "chowmein", description: "Chowmein with chicken tikka pieces", image: "https://i.ytimg.com/vi/tHsn2tpOcLo/maxresdefault.jpg", sizes: ["1:1: 340/-", "1:3: 730/-"]},
+           
+            // SOUP (new items from the provided image)
+            {id: 1001, name: "Thai Soup", price: "180/-", category: "soup", description: "Authentic Thai soup with aromatic herbs and spices", image: "https://images.immediate.co.uk/production/volatile/sites/30/2023/12/Thai-inspired-coconut-chicken-soup-af36358.jpg?resize=768,713", sizes: ["1:1: 180/-", "1:3: 500/-"]},
+            {id: 1002, name: "Corn Soup", price: "150/-", category: "soup", description: "Sweet corn soup with a creamy texture", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2GNu_dR1cR5AKTZHc62qekRA-nnSbT_pmjQ&s", sizes: ["1:1: 150/-", "1:3: 400/-"]},
+            {id: 1003, name: "Thai Clear Soup", price: "200/-", category: "soup", description: "Light and clear Thai soup with subtle flavors", image: "https://eatbetterrecipes.com/wp-content/uploads/Healthy-Thai-Chicken-Soup-2-500x375.jpg", sizes: ["1:1: 200/-", "1:3: 480/-"]},
+            {id: 1004, name: "Cream of Mushroom Soup", price: "250/-", category: "soup", description: "Rich and creamy mushroom soup", image: "https://thecozyapron.com/wp-content/uploads/2019/08/cream-of-mushoom-soup_thecozyapron_1.jpg", sizes: ["1:1: 250/-", "1:3: 600/-"]},
+           
+            // MOMOS
+            {id: 47, name: "Regular Momo 5 Pcs", price: "180/-", category: "momos", description: "Steamed dumplings with vegetable filling", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0Ov0avG_NB5JaZFODBWmCC2noq-uoZGJ0Mw&s"},
+            {id: 48, name: "Chicken Momo 5 Pcs", price: "210/-", category: "momos", description: "Steamed dumplings with chicken filling", image: "https://static.india.com/wp-content/uploads/2024/12/FEATURE-2024-12-15T174448.090.jpg?impolicy=Medium_Widthonly&w=350&h=263"},
+            {id: 49, name: "B.B.Q Momo 5 Pcs", price: "240/-", category: "momos", description: "Barbecue flavored momos", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7sLt47oJ-2s6aanjye0P0FAapZK05u6EV9Q&s"},
+            {id: 50, name: "Soupey Momo 5 Pcs", price: "330/-", category: "momos", description: "Momos served in soup", image: "https://restauranthoppen.com/wp-content/uploads/2022/09/Kathmandu-Momo-Station-Momo-Soup-e1664244729839-1024x576.jpeg"},
+            {id: 51, name: "Cheese Momo 5 Pcs", price: "360/-", category: "momos", description: "Momos with cheese filling", image: "https://hungryq.com/wp-content/uploads/2025/07/Veg-Cheese-Momos-1.png"},
+            
+            // RAMEN
+            {id: 52, name: "Regular Ramen", price: "320/-", category: "ramen", description: "Traditional Japanese ramen noodles", image: "https://thecozycook.com/wp-content/uploads/2023/02/Homemade-Ramen-1-.jpg"},
+            {id: 53, name: "Momo Ramen", price: "450/-", category: "ramen", description: "Ramen served with momos", image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/f6/97/b7/photo0jpg.jpg?w=900&h=500&s=1"},
+            {id: 54, name: "Special Ramen", price: "420/-", category: "ramen", description: "Our special recipe ramen", image: "https://www.wpr.org/wp-content/uploads/2017/03/pork-ramen-scaled.jpg"},
+            {id: 55, name: "Korean Ramen", price: "420/-", category: "ramen", description: "Korean-style spicy ramen", image: "https://www.seriouseats.com/thmb/iD62ByO0qeACNjfCV5eZEqkBxhQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2014__01__20140120-beef-ramyun-homemade-recipe-15-014423f0ac734abc8c0d826e54857afe.jpg"},
+            {id: 56, name: "Ramen Overloaded", price: "499/-", category: "ramen", description: "Fully loaded ramen with extra toppings", image: "https://i.redd.it/johe1kwwebn91.jpg"},
+            
+            // RICE
+            {id: 57, name: "Regular Rice", price: "120/-", category: "rice", description: "Steamed rice", image: "https://www.allrecipes.com/thmb/RSmU1HArhPnDi-DYrXXjUedbh4o=/0x512/filters:no_upscale():max_bytes(150000):strip_icc()/79543-Easy-Fried-Rice-DDMFS-4x3-426f1d764c354b7880a5a9a9f0a52a90.jpg", sizes: ["1:1: 120/-", "1:3: 299/-"]},
+            {id: 58, name: "Chicken Rice", price: "150/-", category: "rice", description: "Rice cooked with chicken", image: "https://iamhomesteader.com/wp-content/uploads/2025/05/Bang-Bang-Chicken-Fried-Rice-2.jpg", sizes: ["1:1: 150/-", "1:3: 399/-"]},
+            {id: 59, name: "Special Rice", price: "180/-", category: "rice", description: "Our special fried rice", image: "https://twoplaidaprons.com/wp-content/uploads/2023/08/house-special-fried-rice-on-a-plate-thumbnail.jpg", sizes: ["1:1: 180/-", "1:3: 490/-"]},
+            {id: 60, name: "Chicken Sizzling", price: "(1:3)-420/-", category: "rice", description: "Sizzling chicken rice", image: "https://www.banglakutir.com/app-contents/upload/1/products/1652245560_1_1_1269327207.jpg"},
+            {id: 61, name: "Beef Sizzling", price: "(1:3)-710/-", category: "rice", description: "Sizzling beef rice", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-GjI6FvDWvG9jmnWXLwNN5YJ8KW_tRhZLEg&s"},
+            
+            // PASTA
+            {id: 63, name: "Chicken BBQ Pasta", price: "250/-", category: "pasta", description: "Pasta with barbecue chicken", image: "https://www.dontgobaconmyheart.co.uk/wp-content/uploads/2020/03/bbq-chicken-pasta-3-744x845.jpg"},
+            {id: 64, name: "Naga Spicy Pasta", price: "280/-", category: "pasta", description: "Spicy naga chili pasta", image: "https://images.deliveryhero.io/image/fd-bd/products/5241177.jpg?width=%s"},
+            {id: 65, name: "White Creamy Pasta", price: "300/-", category: "pasta", description: "Creamy white sauce pasta", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS90IIBiU6SW1KytulhM6ixgKQuX15QC92PYA&s"},
+            {id: 66, name: "Oven Backed Pasta", price: "320/-", category: "pasta", description: "Oven-baked pasta with cheese", image: "https://cdn.othoba.com/images/thumbs/0720917_special-oven-baked-pasta.webp"},
+            
+            // SALAD
+            {id: 67, name: "Chicken Cashew Nut Salad", price: "290/-", category: "salad", description: "Salad with chicken and cashew nuts", image: "https://salsabd.com/wp-content/uploads/2023/06/chicken-cashewnut-salad-1-1.jpg", sizes: ["1:1: 290/-"]},
+            {id: 68, name: "Special Salad", price: "490/-", category: "salad", description: "Our special salad mix", image: "https://cdn.loveandlemons.com/wp-content/uploads/2019/06/broccoli-salad.jpg", sizes: ["1:3: 490/-"]},
+            
+            // SEAFOOD
+            {id: 69, name: "Octopus BBQ/Fry", price: "570/-", category: "seafood", description: "Octopus prepared BBQ or fried style", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmUPJxCuucXHM12ClLTUH33V-q9cFYiK5FVw&s"},
+            {id: 70, name: "Crab BBQ/Fry 2 Pcs", price: "340/-", category: "seafood", description: "Crab prepared BBQ or fried style", image: "https://mariasmenu.com/wp-content/uploads/Crab-Roast.png"},
+            {id: 71, name: "Seafood Rice 1:3", price: "560/-", category: "seafood", description: "Rice with mixed seafood", image: "https://www.kroger.com/content/v2/binary/image/imageset/easy_seafood_rice_pilaf--19_easy-seafood-rice-pilaf_p12-recipe-reshoots_p_23-tkc-0188_b-copy.jpg"},
+            {id: 72, name: "Seafood Chowmein 1:3", price: "560/-", category: "seafood", description: "Chowmein with mixed seafood", image: "https://omnivorescookbook.com/wp-content/uploads/2021/03/210107_eafood-Chow-Mein_550.jpg"},
+            {id: 73, name: "Seafood Soup 1:3", price: "580/-", category: "seafood", description: "Soup with mixed seafood", image: "https://i0.wp.com/www.letscooksomefood.com/wp-content/uploads/2016/09/Thai-Seafood-Soup6.jpg?fit=960%2C720&ssl=1"},
+            {id: 74, name: "Fish Finger", price: "240/-", category: "seafood", description: "Crispy fish fingers", image: "https://vaya.in/recipes/wp-content/uploads/2018/06/Popcorn-Crusted-Fish-Fingers.jpg"},
+            
+            // SET MENU
+            {id: 75, name: "Set Menu 1", price: "290/-", category: "set-menu", description: "Crispy Fried, Chicken with Rice, Salad", image: "https://i.postimg.cc/tCmYq38Y/Chat-GPT-Image-Mar-14-2026-02-37-04-PM.png"},
+            {id: 76, name: "Set Menu 2", price: "420/-", category: "set-menu", description: "Fried Rice, Fry Chicken, Beef Chilli, Vegetables", image: "https://i.postimg.cc/VLzVfMnM/Chat-GPT-Image-Mar-14-2026-02-44-52-PM.png"},
+            {id: 77, name: "Set Menu 3", price: "380/-", category: "set-menu", description: "Fried Rice, Chicken Chilli, Chicken Fry, Vegetables", image: "https://i.postimg.cc/zDFxcB6C/Chat-GPT-Image-Mar-14-2026-02-44-52-PM-1.png"},
+            {id: 78, name: "Set Menu 4", price: "380/-", category: "set-menu", description: "Fried Rice, BBQ Chicken, Chicken Masala, Vegetables", image: "https://i.postimg.cc/mgJjHF1h/Chat-GPT-Image-Mar-14-2026-02-44-52-PM2.png"},
+            {id: 79, name: "Set Menu 5", price: "350/-", category: "set-menu", description: "Fried Rice, Chicken Steak, Mushroom, Vegetables", image: "https://i.postimg.cc/nhR5wzs7/Chat-GPT-Image-Mar-14-2026-02-44-52-PM.png"},
+            {id: 80, name: "Set Menu 6", price: "450/-", category: "set-menu", description: "Thai Soup, Wonton Thai Fried Chicken, Rice, Vegetables, Salad", image: "https://i.postimg.cc/bvKqWLGH/Chat-GPT-Image-Mar-14-2026-03-00-06-PM.png"},
+            {id: 81, name: "Set Menu 7", price: "340/-", category: "set-menu", description: "Mexican Rice, Chicken Cutlet, BBQ Wings, Vegetables", image: "https://i.postimg.cc/WbrgHfhQ/Chat-GPT-Image-Mar-14-2026-02-56-01-PM.png"},
+            {id: 82, name: "Student's Rice Bowl", price: "199/-", category: "set-menu", description: "Special rice bowl for students", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSisnwCfgEVCAPQohc57sN4536ihDSxJjyUsw&s"},
+            
+            // FAMILY PLATTER
+            {id: 83, name: "Family Platter 1", price: "860/-", category: "family-platter", description: "Fried Rice, Thai Soup, Wonton, Fried Chicken, Vegetables (1:2)", image: "https://i.postimg.cc/zB5cyR4r/Chat-GPT-Image-Mar-14-2026-03-02-47-PM.png"},
+            {id: 84, name: "Family Platter 2", price: "1299/-", category: "family-platter", description: "Thai Soup, Chicken Roll, Fried Rice, Tandoori Chicken, Vegetables (1:3)", image: "https://i.postimg.cc/zB5cyR4r/Chat-GPT-Image-Mar-14-2026-03-02-47-PM.png"},
+            {id: 85, name: "Family Platter 3", price: "1499/-", category: "family-platter", description: "Fried Rice, Chicken Fry, Chicken Chilli, Cashew Nut Salad, Vegetables (1:4)", image: "https://i.postimg.cc/zB5cyR4r/Chat-GPT-Image-Mar-14-2026-03-02-47-PM.png"},
+            
+            // DRINKS
+            {id: 86, name: "Lemon Ice Tea", price: "120/-", category: "drinks", description: "Refreshing lemon iced tea", image: "https://budleaf.com/wp-content/uploads/2023/04/shutterstock_2175082285-1568x1045.jpg"},
+            {id: 87, name: "Honey Ginger Tea", price: "99/-", category: "drinks", description: "Warming honey ginger tea", image: "https://cdn.shopify.com/s/files/1/0615/9253/5282/files/00072310010307_products_signature_ginger_honey_plus_zinc_lifestyle_2023_blog_cropped_2048x2048.jpg?v=1723649642"},
+            {id: 88, name: "Malta Tea", price: "100/-", category: "drinks", description: "Traditional malta tea", image: "https://i.ytimg.com/vi/MvrAp59_Iwc/maxresdefault.jpg"},
+            {id: 89, name: "Tamarind Tea", price: "120/-", category: "drinks", description: "Tangy tamarind tea", image: "https://img.freepik.com/free-photo/delicious-sweet-drink-tamarind-juice-gray-surface_1150-41915.jpg?semt=ais_rp_progressive&w=740&q=80"},
+            {id: 90, name: "Raw Masala Tea", price: "80/-", category: "drinks", description: "Spicy raw masala tea", image: "https://www.nestlehomeofgood.com.my/sites/default/files/srh_recipes/1c59b8dc371634aeaea14fd52d75c324.jpg"},
+            {id: 91, name: "Hot Coffee", price: "100/-", category: "drinks", description: "Freshly brewed hot coffee", image: "https://img.freepik.com/free-photo/latte-coffee_1122-2728.jpg?semt=ais_hybrid&w=740&q=80"},
+            {id: 92, name: "Chocolate Cold Coffee", price: "150/-", category: "drinks", description: "Chocolate flavored cold coffee", image: "https://www.cadburydessertscorner.com/hubfs/dc-website-2022/articles/iced-coffee-chocolate-milkshake-with-pistachio-sprinkle/feature-image-iced-coffee-chocolate-milkshake-with-pistachio-sprinkle.webp"},
+            {id: 93, name: "Chocolate Chiller ", price: "220/-", category: "drinks", description: "Chocolate flavored cold coffee", image: "https://popmenucloud.com/cdn-cgi/image/width%3D1200%2Cheight%3D1200%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/rbumydtq/29e5312c-66a6-436c-b06d-736bd3e448c4.png"},
+            {id: 94, name: "Black Coffee", price: "100/-", category: "drinks", description: "Strong black coffee", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbPGYG1r-F0glk6jt88L8P-UbXlsHpK2UOCw&s"},
+            {id: 95, name: "Cappuccino", price: "150/-", category: "drinks", description: "Creamy cappuccino", image: "https://t3.ftcdn.net/jpg/05/34/82/24/360_F_534822425_9Ok2L60rSndeunIM6sELPKvuDqzhopX7.jpg"},
+            {id: 96, name: "Lacchi", price: "150/-", category: "drinks", description: "Traditional sweet lacchi", image: "https://static.toiimg.com/thumb/msid-106299776,width-1070,height-580,imgsize-28406,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg"},
+            {id: 97, name: "Faluda", price: "180/-", category: "drinks", description: "Sweet faluda dessert drink", image: "https://naturallynidhi.com/wp-content/uploads/2022/10/Rose-Rasmalai-Falooda-1.jpg"},
+            {id: 98, name: "Classic Lemonade", price: "120/-", category: "drinks", description: "Classic fresh lemonade", image: "https://i0.wp.com/thejoyfilledkitchen.com/wp-content/uploads/2021/04/Sparkling-Lemonade-1-2.jpg?resize=740%2C793&ssl=1"},
+            {id: 99, name: "Mint Lemon Lime", price: "150/-", category: "drinks", description: "Mint infused lemon lime drink", image: "https://www.middleeasteye.net/sites/default/files/images-story/dsc_0035.jpg"},
+            {id: 100, name: "Carrot Juice", price: "200/-", category: "drinks", description: "Fresh carrot juice", image: "https://media.post.rvohealth.io/wp-content/uploads/2020/10/carrot-juice-732x549-thumbnail-732x549.jpg"},
+            {id: 101, name: "Pineapple Juice", price: "170/-", category: "drinks", description: "Fresh pineapple juice", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH8RaGl3Ky0KBBwVoe3Fi063KnUYme-MvjLA&s"},
+            {id: 102, name: "Papaya Juice", price: "180/-", category: "drinks", description: "Fresh papaya juice", image: "https://goodfoodbaddie.com/wp-content/uploads/2023/07/good-food-baddie-papaya-juice.jpg"},
+            {id: 103, name: "Orange Juice", price: "280/-", category: "drinks", description: "Fresh orange juice", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYUgitb3vfAxHO83UKONVswCs4vng1TwloMA&s"},
+            {id: 104, name: "Apple Juice", price: "260/-", category: "drinks", description: "Fresh apple juice", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5bVwCNj6HWwI26wdzHvauJqD_crFzyPnabg&s"},
+            {id: 105, name: "Fruit Mixed Juice", price: "299/-", category: "drinks", description: "Mixed fruit juice blend", image: "https://img.freepik.com/premium-photo/vibrant-nutritious-fruit-juice-fresh-salad-with-mixed-fruits-berries-greens_1293074-20379.jpg"},
+            {id: 106, name: "Virgin Mojito", price: "250/-", category: "drinks", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjYodqLkomsrROiSGMkHyDOB3sk66XRLBP9g&s"},
+            {id: 107, name: "Blue Ocean Mojito", price: "280/-", category: "drinks", image: "https://sautcher.com/wp-content/uploads/2023/04/WhatsApp-Image-2023-09-25-at-11.37.57-AM.jpeg"},
+            {id: 108, name: "Sunset Mojito", price: "280/-", category: "drinks", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJH4G3ZWzmPlMX5ekcTk6ha-cyFR9IVd3CeQ&s"},
+            {id: 109, name: "Red Kiss Mojito", price: "280/-", category: "drinks", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbCpgkwOqFJMkOMYf8QAjUxVs44MvO-OMjDg&s"},
+            {id: 110, name: "Green Garden Mojito", price: "320/-", category: "drinks", image: "https://felenevodka.com/wp-content/uploads/coconut-lime-mojito-cocktail-with-Felene-Coconut-lime-scaled.jpg"},
+            {id: 111, name: "Strawberry Mojito", price: "280/-", category: "drinks", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT01ek8PJGxHsVnEvXHRlyok-d94LVlxts4-A&s"},
+            // Smoothies & Shakes
+            {id: 112, name: "Mango Mastani", price: "280/-", category: "drinks", image: "https://ministryofcurry.com/wp-content/uploads/2022/06/Mango-Mastani_-5.jpg"},
+            {id: 113, name: "Vanilla Vice", price: "280/-", category: "drinks", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnpMB3uKX8PquzmmpWUCI_c8o0I0W3ya01PQ&s"},
+            {id: 114, name: "California Crush", price: "280/-", category: "drinks", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQfEE9hb_g6zHD-dzmspGDbkoq8RbtRUrAeA&s"},
+            {id: 115, name: "Strawberry Stunner", price: "280/-", category: "drinks", image: "https://cdn.dotpe.in/longtail/store-items/8511892/NuqJNrc1.webp"},
+            {id: 116, name: "Chocolate Coffee", price: "280/-", category: "drinks", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgFCMTMjiUng9DB7kiBpNvzWKFhY2lwJrcZQ&s"},
+            {id: 117, name: "Oreo Choco", price: "280/-", category: "drinks", image: "https://www.cadburydessertscorner.com/hs-fs/hubfs/dc-website-2022/articles/chocolate-hazelnut-oreo-milkshake-a-rich-and-creamy-drink/introduction.webp?width=1015&height=767&name=introduction.webp"}
+        ];
+
+        // Category names for display
+        const categoryNames = {
+            
+            "appetizers": "Appetizers",
+            "burgers": "Burgers",
+            "pizza": "Pizza",
+            "chowmein": "Chow Mein",
+            "momos": "Momos",
+            "soup": "Soup",
+            "ramen": "Ramen",
+            "rice": "Rice",
+            "pasta": "Pasta",
+            "salad": "Salad",
+            "seafood": "Seafood",
+            "set-menu": "Set Menu",
+            "family-platter": "Family Platter",
+            "drinks": "Drinks & Beverages",
+            "smoothies & shakes": "Smoothies & Shakes",
+            
+        };
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mainNav = document.getElementById('mainNav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+            });
+            
+            // Generate category buttons
+            const menuCategories = document.getElementById('menuCategories');
+            const categories = [...new Set(menuData.map(item => item.category))];
+            
+            // Add "All" button first
+            const allButton = document.createElement('button');
+            allButton.className = 'category-btn active';
+            allButton.textContent = 'All Menu';
+            allButton.dataset.category = 'all';
+            allButton.addEventListener('click', filterMenu);
+            menuCategories.appendChild(allButton);
+            
+            // Add other category buttons
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'category-btn';
+                button.textContent = categoryNames[category] || category;
+                button.dataset.category = category;
+                button.addEventListener('click', filterMenu);
+                menuCategories.appendChild(button);
+            });
+            
+            // Generate menu items
+            const menuGrid = document.getElementById('menuGrid');
+            
+            menuData.forEach(item => {
+                const menuItem = document.createElement('div');
+                menuItem.className = 'menu-item active';
+                menuItem.dataset.category = item.category;
+                
+                let sizesHTML = '';
+                if (item.sizes) {
+                    sizesHTML = `
+                        <div class="item-sizes">
+                            ${item.sizes.map(size => {
+                                const [sizeName, price] = size.split(': ');
+                                return `<div class="size">${sizeName}: <span class="size-price">${price}</span></div>`;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+                
+                menuItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="item-image">
+                    <div class="item-header">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">${item.price}</div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-description">${item.description}</div>
+                        ${sizesHTML}
+                    </div>
+                `;
+                
+                menuGrid.appendChild(menuItem);
+            });
+            
+            // Filter menu function
+            function filterMenu() {
+                const category = this.dataset.category;
+                
+                // Update active button
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Show/hide menu items
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    if (category === 'all' || item.dataset.category === category) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Close mobile menu if open
+                        mainNav.classList.remove('active');
+                        
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
